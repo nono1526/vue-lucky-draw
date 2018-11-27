@@ -14,8 +14,10 @@
       </VBtn>
     </div>
     <div class="flex">
-      <div class="left__list list__border">
-
+      <div class="left__list list">
+        <div v-for="img in images" :key="img.idx + img.name">
+          {{ img.name }}
+        </div>
       </div>
       <div class="right__list main">
         <div v-show="isEnd">
@@ -64,7 +66,11 @@ export default {
       files.forEach(file => {
         let reader = new FileReader()
         reader.addEventListener('load', () => {
-          this.images.push(reader.result)
+          this.images.push({
+            src: reader.result,
+            name: file.name,
+            idx: file.lastModified
+          })
           this.src = reader.result
         })
         reader.readAsDataURL(file)
@@ -72,7 +78,7 @@ export default {
     },
     randomPig (timeout) {
       this.isEnd = false
-      this.src = this.images[this.getRandom(0, this.images.length)]
+      this.src = this.images[this.getRandom(0, this.images.length)].src
       this.count++
       if (this.count < 100) {
         setTimeout(() => this.randomPig(this.count * 1.5), timeout)
@@ -130,9 +136,12 @@ canvas {
 .left__list {
   flex: 0.2!important;
 }
-.list__border {
+.list {
   border: 2px solid #f7f7f7;
   margin: 10px;
+  color: #fff;
+  height: 500px;
+  overflow: auto;
 }
 .right__list {
   flex: 1!important;
