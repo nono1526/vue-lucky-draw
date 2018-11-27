@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <img 
+    <img
       :src="src"
     >
   </div>
@@ -13,8 +13,8 @@ export default {
     src: {
       default: '',
       type: String
-    },
-    
+    }
+
   }
 }
 </script>
