@@ -1,6 +1,8 @@
 <template>
   <div class="hello">
     <img
+      class="photo"
+      :class="{ending: isEnd}"
       :src="src"
     >
   </div>
@@ -13,14 +15,17 @@ export default {
     src: {
       default: '',
       type: String
+    },
+    isEnd: {
+      default: false,
+      type: Boolean
     }
-
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 h3 {
   margin: 40px 0 0;
 }
@@ -35,8 +40,15 @@ li {
 a {
   color: #42b983;
 }
-img {
+.photo {
   width: 300px;
   height: 300px;
+  transition: 0.5s;
+  transition-timing-function: ease;
+}
+.ending {
+  transition: 1.2s;
+  transition-timing-function: ease;
+  transform: translateY(150px) scale(2);
 }
 </style>

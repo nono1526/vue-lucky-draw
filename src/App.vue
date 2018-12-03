@@ -31,6 +31,7 @@
         >
         <PhotoFrame
           :src="src"
+          :isEnd="isEnd"
         />
       </div>
     </div>
@@ -54,7 +55,7 @@ export default {
       src: '',
       images: [],
       count: 0,
-      isEnd: ''
+      isEnd: false
     }
   },
   methods: {
