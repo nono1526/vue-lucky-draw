@@ -55,7 +55,8 @@ export default {
       src: '',
       images: [],
       count: 0,
-      isEnd: false
+      isEnd: false,
+      audio: null
     }
   },
   methods: {
@@ -84,13 +85,14 @@ export default {
       if (this.count < 150) {
         setTimeout(() => {
           this.randomPig(this.count * 1.5)
-          let audio = new Audio(`${this.baseUrl}/audio/change.mp3#t=0.5,0.6`)
-          audio.currentTime = 1
+          let audio = new Audio(`${this.baseUrl}/audio/change.mp3#t=0.5,0.55`)
           audio.play()
         }, timeout)
       } else {
         this.count = 0
         this.isEnd = true
+        let audio = new Audio(`${this.baseUrl}/audio/reward.mp3`)
+        audio.play()
       }
     },
     getRandom (min, max) {
@@ -98,6 +100,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.baseUrl)
     const canvas = this.$refs.bgCanvas
     canvas.height = window.innerHeight
     canvas.width = window.innerWidth
