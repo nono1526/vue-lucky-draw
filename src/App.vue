@@ -81,8 +81,13 @@ export default {
       this.isEnd = false
       this.src = this.images[this.getRandom(0, this.images.length)].src
       this.count++
-      if (this.count < 100) {
-        setTimeout(() => this.randomPig(this.count * 1.5), timeout)
+      if (this.count < 150) {
+        setTimeout(() => {
+          this.randomPig(this.count * 1.5)
+          let audio = new Audio(`${this.baseUrl}/audio/change.mp3#t=0.5,0.6`)
+          audio.currentTime = 1
+          audio.play()
+        }, timeout)
       } else {
         this.count = 0
         this.isEnd = true

@@ -41,14 +41,14 @@ a {
   color: #42b983;
 }
 .photo {
-  width: 300px;
-  height: 300px;
+  width: 462px;
+  height: 819px;
   transition: 0.5s;
   transition-timing-function: ease;
 }
 .ending {
   transition: 1.2s;
   transition-timing-function: ease;
-  transform: translateY(150px) scale(2);
+  transform: translateY(80px) scale(1.5) rotate(720deg);
 }
 </style>
