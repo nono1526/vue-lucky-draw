@@ -9,6 +9,7 @@
     "deploy": "gh-pages -d ./dist"
   },
   "dependencies": {
+    "fireworks-canvas": "^2.3.1",
     "vue": "^2.5.17"
   },
   "devDependencies": {

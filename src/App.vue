@@ -13,7 +13,7 @@
         抽獎
       </VBtn>
     </div>
-    <div class="flex">
+    <div class="flex"  ref="fireworks-bg">
 
       <div class="left__list">
         <h3>參加者</h3>
@@ -46,15 +46,13 @@
         />
       </div>
     </div>
-    <div class="flex">
-
-    </div>
-
-    <canvas ref="bgCanvas"></canvas>
+    <audio :src="`${this.baseUrl}/audio/change.mp3#t=0.5,0.55`" ref="change"></audio>
+    <audio :src="`${this.baseUrl}/audio/reward.mp3`" ref="reward"></audio>
   </div>
 </template>
 
 <script>
+import * as Fireworks from 'fireworks-canvas'
 import PhotoFrame from './components/PhotoFrame.vue'
 import VBtn from './components/VBtn.vue'
 export default {
@@ -72,7 +70,9 @@ export default {
       isEnd: false,
       audio: null,
       rewardAudio: null,
-      rewardList: []
+      rewardList: [],
+      fireworks: null,
+      fireworkShow: null
     }
   },
   methods: {
@@ -95,39 +95,64 @@ export default {
       })
     },
     randomPig (timeout) {
+      const changeAudio = this.$refs.change
+      const rewardAudio = this.$refs.reward
       this.isEnd = false
       let rndIndex = this.getRandom(0, this.images.length)
-      console.log(rndIndex)
       this.src = this.images[rndIndex].src
       this.count++
-      this.rewardAudio && this.rewardAudio.pause()
-      if (this.count < 150) {
+      rewardAudio && rewardAudio.pause()
+      this.stopFireworkShow()
+      if (this.count < 10) {
         setTimeout(() => {
-          this.randomPig(this.count * 1.5)
-          let audio = new Audio(`${this.baseUrl}/audio/change.mp3#t=0.5,0.55`)
-          audio.play()
+          this.randomPig(this.count * 1.5 + 50)
+          changeAudio.currentTime = 1
+          changeAudio.play()
         }, timeout)
       } else {
         this.count = 0
         this.isEnd = true
-        this.rewardAudio = new Audio(`${this.baseUrl}/audio/reward.mp3`)
-        this.rewardAudio.currentTime = 0
-        this.rewardAudio.play()
+        rewardAudio.currentTime = 0
+        rewardAudio.play()
         this.rewardList.push(...this.images.splice(rndIndex, 1))
+        this.startFireworkShow()
       }
     },
     getRandom (min, max) {
       return Math.floor(Math.random() * (max - min)) + min
+    },
+    startFireworkShow () {
+      this.fireworkShow = window.setInterval(() => this.fireworks.fire(), 200)
+    },
+    stopFireworkShow () {
+      window.clearInterval(this.fireworkShow)
     }
+
   },
   mounted () {
-    console.log(this.baseUrl)
-    const canvas = this.$refs.bgCanvas
-    canvas.height = window.innerHeight
-    canvas.width = window.innerWidth
-    const ctx = canvas.getContext('2d')
-    ctx.fillStyle = '#222'
-    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
+    const options = {
+      maxRockets: 20, // max # of rockets to spawn
+      rocketSpawnInterval: 150, // millisends to check if new rockets should spawn
+      numParticles: 100, // number of particles to spawn when rocket explodes (+0-10)
+      explosionMinHeight: 0.5, // percentage. min height at which rockets can explode
+      explosionMaxHeight: 1, // percentage. max height before a particle is exploded
+      explosionChance: 0.13 // chance in each tick the rocket will explode
+    }
+    this.fireworks = new Fireworks(this.$refs['fireworks-bg'], options)
+    const Things = this.fireworks.things.constructor.prototype
+    const baseURL = this.baseUrl
+    Things.explode = function (particle) {
+      const audioArray = ['burst1.mp3', 'burst2.mp3', 'burst3.mp3', 'burst4.mp3']
+      let randomBurst = Math.floor(Math.random() * 4)
+      const audio = new Audio(`${baseURL}/audio/${audioArray[randomBurst]}`)
+      audio.play()
+      console.log(this.rockets)
+      this.rockets--
+      for (var i = 0; i < this.numParticles; i += 1) {
+        this.add(particle.clone())
+      }
+      this['delete'](particle)
+    }
   }
 }
 </script>
@@ -144,6 +169,8 @@ export default {
   color: #2c3e50;
   position: relative;
   padding: 30px;
+  height: 100%;
+  background-color: #222;
 }
 input[type="file"] {
   display: none
@@ -152,16 +179,12 @@ html, body {
   padding: 0;
   margin:0;
   height: 100%;
+  overflow: hidden;
 }
-canvas {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -2;
-}
+
 .flex {
   display: flex;
+  position: relative;
 }
 .left__list {
   flex: 0.2!important;
@@ -187,5 +210,11 @@ canvas {
 }
 .main {
   margin: 10px;
+}
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 </style>
