@@ -14,15 +14,26 @@
       </VBtn>
     </div>
     <div class="flex">
-      <div class="left__list list">
-        <div v-for="img in images" :key="img.idx + img.name">
-          {{ img.name }}
+
+      <div class="left__list">
+        <h3>參加者</h3>
+        <div class="list">
+          <div v-for="img in images" :key="img.idx + img.name">
+            {{ img.name }}
+          </div>
+        </div>
+        <h3>得獎人</h3>
+        <div class="list down__list">
+          <div
+            v-for="img in rewardList" :key="img.idx + img.name"
+          >
+            {{
+              img.name
+            }}
+          </div>
         </div>
       </div>
       <div class="right__list main">
-        <div v-show="isEnd">
-          恭喜!!得獎的是!!
-        </div>
         <input
           type="file"
           ref="file"
@@ -34,6 +45,9 @@
           :isEnd="isEnd"
         />
       </div>
+    </div>
+    <div class="flex">
+
     </div>
 
     <canvas ref="bgCanvas"></canvas>
@@ -56,7 +70,9 @@ export default {
       images: [],
       count: 0,
       isEnd: false,
-      audio: null
+      audio: null,
+      rewardAudio: null,
+      rewardList: []
     }
   },
   methods: {
@@ -80,8 +96,11 @@ export default {
     },
     randomPig (timeout) {
       this.isEnd = false
-      this.src = this.images[this.getRandom(0, this.images.length)].src
+      let rndIndex = this.getRandom(0, this.images.length)
+      console.log(rndIndex)
+      this.src = this.images[rndIndex].src
       this.count++
+      this.rewardAudio && this.rewardAudio.pause()
       if (this.count < 150) {
         setTimeout(() => {
           this.randomPig(this.count * 1.5)
@@ -91,8 +110,10 @@ export default {
       } else {
         this.count = 0
         this.isEnd = true
-        let audio = new Audio(`${this.baseUrl}/audio/reward.mp3`)
-        audio.play()
+        this.rewardAudio = new Audio(`${this.baseUrl}/audio/reward.mp3`)
+        this.rewardAudio.currentTime = 0
+        this.rewardAudio.play()
+        this.rewardList.push(...this.images.splice(rndIndex, 1))
       }
     },
     getRandom (min, max) {
@@ -144,13 +165,22 @@ canvas {
 }
 .left__list {
   flex: 0.2!important;
+  margin: 10px;
+  h3 {
+    margin: 10px 0 5px 0;
+    color: #fff;
+  }
 }
 .list {
   border: 2px solid #f7f7f7;
-  margin: 10px;
   color: #fff;
-  height: 500px;
   overflow: auto;
+  background-color: rgba(#eaeaea, 0.1);
+  height: 400px;
+}
+.down__list {
+  margin-top: 10px;
+  height: 200px
 }
 .right__list {
   flex: 1!important;
