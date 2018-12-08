@@ -103,7 +103,7 @@ export default {
       this.count++
       rewardAudio && rewardAudio.pause()
       this.stopFireworkShow()
-      if (this.count < 10) {
+      if (this.count < 100) {
         setTimeout(() => {
           this.randomPig(this.count * 1.5 + 50)
           changeAudio.currentTime = 1
