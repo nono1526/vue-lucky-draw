@@ -20,8 +20,8 @@ export default {
     margin: 10px;
     background-color: transparent;
     border-radius: 0px;
-    border: 2px solid #f7f7f7;
-    color: #fff;
+    border: 2px solid #DC9149;
+    color: #DC9149;
     padding-top: 20px;
     padding-bottom: 20px;
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);

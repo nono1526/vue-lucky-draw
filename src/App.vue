@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :style="{'background': theme}">
     <div class="flex">
       <VBtn
         class="left__list"
@@ -13,7 +13,7 @@
         抽獎
       </VBtn>
     </div>
-    <div class="flex"  ref="fireworks-bg">
+    <div class="flex" ref="fireworks-bg">
 
       <div class="left__list">
         <h3>參加者</h3>
@@ -73,6 +73,11 @@ export default {
       rewardList: [],
       fireworks: null,
       fireworkShow: null
+    }
+  },
+  computed: {
+    theme () {
+      return this.isEnd ? '#222' : '#AD0F0D'
     }
   },
   methods: {
@@ -162,11 +167,12 @@ export default {
   box-sizing: border-box;
 }
 #app {
+  transition: 1s;
   font-family: '微軟正黑體', 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #DC9149;
   position: relative;
   padding: 30px;
   height: 100%;
@@ -191,12 +197,12 @@ html, body {
   margin: 10px;
   h3 {
     margin: 10px 0 5px 0;
-    color: #fff;
+    color: #DC9149;
   }
 }
 .list {
-  border: 2px solid #f7f7f7;
-  color: #fff;
+  border: 2px solid #DC9149;
+  color: rgb(255, 191, 132);
   overflow: auto;
   background-color: rgba(#eaeaea, 0.1);
   height: 400px;
