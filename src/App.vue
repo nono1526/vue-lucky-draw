@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :style="{'background': theme}">
+  <div id="app">
     <div class="flex">
       <VBtn
         class="left__list"
@@ -100,6 +100,7 @@ export default {
       })
     },
     randomPig (timeout) {
+      const SHOW_FIREWORK_TIME = 10
       const changeAudio = this.$refs.change
       const rewardAudio = this.$refs.reward
       this.isEnd = false
@@ -108,19 +109,21 @@ export default {
       this.count++
       rewardAudio && rewardAudio.pause()
       this.stopFireworkShow()
-      if (this.count < 100) {
+      if (this.count < 100) { // continue do time change photo
         setTimeout(() => {
           this.randomPig(this.count * 1.5 + 50)
           changeAudio.currentTime = 1
           changeAudio.play()
         }, timeout)
-      } else {
+      } else { // stop
         this.count = 0
         this.isEnd = true
         rewardAudio.currentTime = 0
         rewardAudio.play()
         this.rewardList.push(...this.images.splice(rndIndex, 1))
         this.startFireworkShow()
+        // 煙火播放 10s
+        window.setTimeout(() => this.stopFireworkShow(), 1000 * SHOW_FIREWORK_TIME)
       }
     },
     getRandom (min, max) {
@@ -176,7 +179,7 @@ export default {
   position: relative;
   padding: 30px;
   height: 100%;
-  background-color: #222;
+  background-color: #AD0F0D;
 }
 input[type="file"] {
   display: none
