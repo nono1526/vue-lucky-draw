@@ -13,7 +13,7 @@
         抽獎
       </VBtn>
     </div>
-    <div class="flex" ref="fireworks-bg">
+    <div class="flex">
 
       <div class="left__list">
         <h3>參加者</h3>
@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <div class="right__list main">
+      <div class="right__list main"  ref="fireworks-bg">
         <input
           type="file"
           ref="file"
@@ -48,6 +48,9 @@
     </div>
     <audio :src="`${this.baseUrl}/audio/change.mp3#t=0.5,0.55`" ref="change"></audio>
     <audio :src="`${this.baseUrl}/audio/reward.mp3`" ref="reward"></audio>
+    <img class="right__bg-stamp__left" :src="`${this.baseUrl}/bg-stamp.png`" alt="">
+    <img class="right__bg-stamp__right" :src="`${this.baseUrl}/bg-stamp.png`" alt="">
+
   </div>
 </template>
 
@@ -64,7 +67,7 @@ export default {
   data () {
     return {
       baseUrl: process.env.BASE_URL,
-      src: '',
+      src: `${process.env.BASE_URL}/bg-card.png`,
       images: [],
       count: 0,
       isEnd: false,
@@ -94,7 +97,6 @@ export default {
             name: file.name,
             idx: file.lastModified
           })
-          this.src = reader.result
         })
         reader.readAsDataURL(file)
       })
@@ -205,7 +207,7 @@ html, body {
 }
 .list {
   border: 2px solid #DC9149;
-  color: rgb(255, 191, 132);
+  color: #e7e7e7;
   overflow: auto;
   background-color: rgba(#eaeaea, 0.1);
   height: 400px;
@@ -216,6 +218,7 @@ html, body {
 }
 .right__list {
   flex: 1!important;
+  position: relative;
 }
 .main {
   margin: 10px;
@@ -225,5 +228,23 @@ canvas {
   top: 0;
   left: 0;
   z-index: 1;
+}
+.right__bg-stamp__left {
+  position: absolute;
+  top: 20%;
+  left: 260px;
+  height: 30%;
+  transform: rotate(-30deg);
+  opacity: .15;
+}
+
+.right__bg-stamp__right {
+  position: absolute;
+  top: 30%;
+  right: 1%;
+  height: 25%;
+  transform: rotate(-165deg);
+  opacity: .3;
+
 }
 </style>
